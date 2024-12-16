@@ -1,5 +1,10 @@
 package excepciones;
 
-public class ExcepcionPropia {
+public class ExcepcionPropia extends Exception{
+	
+	public ExcepcionPropia(String mensaje)
+	{
+		super(mensaje);
+	}
 
 }
