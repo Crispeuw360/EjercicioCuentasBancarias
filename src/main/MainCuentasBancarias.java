@@ -59,6 +59,7 @@ public class MainCuentasBancarias {
 	public static void sacarDinero(HashMap<String, Cuenta> m) {
 		String dni;
 		int cantidadRetirar;
+		boolean ok =false;
 
 		System.out.println("Introduce el dni");
 		dni = Utilidades.introducirCadena();
@@ -66,16 +67,25 @@ public class MainCuentasBancarias {
 		if (m.containsKey(dni)) 
 		{
 			cantidadRetirar = Utilidades.leerInt("Cantidad a retirar", 1, 1000000000);
-			try {
-				Cuenta cuenta = m.get(dni);
-				if (cuenta.getSaldo() < cantidadRetirar) {
-					throw new ExcepcionPropia("Saldo insuficiente en la cuenta");
-				}
-				cuenta.setSaldo(cuenta.getSaldo() - cantidadRetirar);
-				System.out.println("Retiro exitoso. Saldo actual: " + cuenta.getSaldo());
-			} catch (ExcepcionPropia e) {
-				System.out.println(e.getMessage());
-			}
+			do {
+				try {
+					Cuenta cuenta = m.get(dni);
+					if (cuenta.getSaldo() < cantidadRetirar) 
+					{
+						throw new ExcepcionPropia("Saldo insuficiente en la cuenta");
+					}
+					cuenta.setSaldo(cuenta.getSaldo() - cantidadRetirar);
+					System.out.println("Retiro exitoso. Saldo actual: " + cuenta.getSaldo());
+					ok =true;
+				} catch (ExcepcionPropia e) 
+				{
+					System.out.println(e.getMessage());
+					ok = false;
+				} 
+			} while (!ok);
+		}else
+		{
+			System.out.println("No existe este dni en la base: ");
 		}
 	}
 
@@ -85,8 +95,10 @@ public class MainCuentasBancarias {
 		System.out.println("introduce el nombre a buscar: ");
 		nombre = Utilidades.introducirCadena();
 
-		for (Cuenta c : m.values()) {
-			if (nombre.equalsIgnoreCase(c.getNomCuenta())) {
+		for (Cuenta c : m.values()) 
+		{
+			if (nombre.equalsIgnoreCase(c.getNomCuenta())) 
+			{
 				System.out.println(c.getDni());
 			} else {
 				System.err.println("No se Encontro ese nombre en la base");
@@ -100,7 +112,8 @@ public class MainCuentasBancarias {
 		HashMap<String, Cuenta> mapa = new HashMap<>();
 		
 		do {
-			switch (opcion = mostrarMenu()) {
+			switch (opcion = mostrarMenu()) 
+			{
 			case 1:
 				introducirNuevaCuenta(mapa);
 				break;
